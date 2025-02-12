@@ -1,0 +1,35 @@
+{
+  "name": "klooger-bot-1.0.0-pre-alpha_dev",
+  "version": "1.0.0",
+  "description": "A Discord music bot",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mykel-M/disc-music-bot.git#klooger-bot"
+  },
+  "keywords": [
+    "discord",
+    "bot",
+    "music",
+    "guild",
+    "management"
+  ],
+  "author": "samuelbachet, Mykel-M",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Mykel-M/disc-music-bot/issues"
+  },
+  "homepage": "https://github.com/Mykel-M/disc-music-bot/tree/klooger-bot#readme",
+  "dependencies": {
+    "discord.js": "^14.18.0",
+    "puppeteer": "^24.2.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.20.0",
+    "eslint": "^9.20.1",
+    "globals": "^15.15.0"
+  }
+}
