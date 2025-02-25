@@ -1,6 +1,6 @@
 {
 	"prefix": "!",
 	"token": "bot-token",
-	"clientId": "bot-application-id",
-	"guildId": "server-id"
+	"clientId": "client-id",
+	"guildId": "guild-id"
 }

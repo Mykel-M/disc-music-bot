@@ -1,101 +1,95 @@
-// streamHandler.js
-
 // chores
 const queueState = require('./queueState');
 const songState = require('./songState');
 
 // core
-// We initialize an array to store the queue array that we will retrieve from our queueState
 let queueArray = [];
 
-
-// Our playSongHandler that retrieves the URL and its duration and then processes the stream
-// In this function we could just call another method from another module that processes the stream, then we just have that method call a timer function
-// For now, we just use logs to indicate that the values are being retrieved successfully
-function playSongHandler() {
-
-	// if the songState is set to True (active)
+async function playSongHandler(interaction) {
 	if (songState.getSongStatus()) {
+		// Log the song and its duration in seconds
+		console.log('Playing song:', songState.getSong());
+		console.log('Song duration:', songState.getSongTime(), 'seconds');
 
-		// feedback; show URL
-		console.log('Playing song: ', songState.getSong());
+		// If the interaction hasn't been replied to, use reply; otherwise, use followUp
+		if (!interaction.replied) {
+			await interaction.reply({ content: `Now playing: ${songState.getSong()}`, flags: 64 });
+		}
+		else {
+			await interaction.followUp({ content: `Now playing: ${songState.getSong()}`, flags: 64 });
+		}
 
-		// feedback; show duration
-		console.log('Song duration: ', songState.getSongTime());
-
-		//
-		// Stream output; we can call a local function on this line or an exported one to actually play the song and connect the bot etc..
-		//
-
-		// timeout function created by ChatGPT to process our queue after the song is finished
-		setTimeout(() => {
-
-			// This will run after 5 seconds
+		// Set a timeout for the duration of the song (in milliseconds)
+		setTimeout(async () => {
 			console.log('Song finished');
+
+			// Mark the song as finished
 			songState.setSongStatus(false);
 
-			// Call queueSongSearch() to see if any songs are in the queue now that the song is finished
-			queueSongSearch();
-
-			// Convert seconds to milliseconds as required by setTimeout
+			// After song finishes, check if there are queued songs
+			await queueSongSearch(interaction);
 		}, songState.getSongTime() * 1000);
 	}
+	else if (!interaction.replied) {
+		await interaction.reply({ content: 'There is no song currently playing.', flags: 64 });
+	}
 	else {
-		console.log('Invalid');
+		await interaction.followUp({ content: 'There is no song currently playing.', flags: 64 });
 	}
 }
 
-// Here we want to check if there's anything in the queue and then load the queue into the Song State
-// This only gets activated after a song is ended
-function queueSongSearch() {
-
-	// Check if the queue is active
+async function queueSongSearch(interaction) {
 	if (queueState.getQueueStatus()) {
-
-		// output to console what's in the queue
-		console.log('Queued songs: ', queueState.getQueue());
-
-		// Call the queueLoadIntoSongState to process the queued songs into the songState
-		queueLoadIntoSongState();
+		console.log('Queued songs:', queueState.getQueue());
+		await queueLoadIntoSongState(interaction);
 	}
 	else {
 		console.log('Queue is inactive');
+		if (!interaction.replied) {
+			await interaction.reply({ content: 'Queue is inactive. Please add a song to the queue!', flags: 64 });
+		}
+		else {
+			await interaction.followUp({ content: 'Queue is inactive. Please add a song to the queue!', flags: 64 });
+		}
 	}
 }
-// Function to load the queued songs into the songState to be played
-function queueLoadIntoSongState() {
 
-		 // Store the values (URLs) in our getQueue(array) from the queueState into a local queueArray variable
+async function queueLoadIntoSongState(interaction) {
+	// Retrieve the current queue
 	queueArray = queueState.getQueue();
 
-	// Here we check if the length of the array is above 0 so this process initiates if there are still songs in the queue; keeps the loop going
 	if (queueArray.length > 0) {
-
-		// We set the value of setSong(string) to the value of the first element in queueArray; load the 1st queued URL into the songState
+		// Load the next song into the song state
 		songState.setSong(queueArray[0]);
-
-		 // We set setSongStatus to true so our playSongHandler will play the song; ensuring that we pass the condition for songs to play
 		songState.setSongStatus(true);
 
-		 // We remove the first element of the queueArray
-		 // Removing the song we just played i.e ) shift the second element to first, effectivelty removing the first initial element
+		// Remove the song that is now playing from the queue
 		queueArray.shift();
-
-		 // Then we update the queueState setQueue array so the arrays move to the left
 		queueState.setQueue(queueArray);
 
-		 // Now we call playSongHandler() to play our song; functional loop begins again
-		playSongHandler();
-	}
+		console.log('Next song in the queue:', songState.getSong());
 
-		 // Once the length of queueArray is 0, we tell the console that the queue is empty
-		 // Functional loopp effectively stops
-	else if (queueArray.length === 0) {
-		console.log('Queue empty');
+		if (!interaction.replied) {
+			await interaction.reply({ content: 'Now playing next song...', flags: 64 });
+		}
+		else {
+			await interaction.followUp({ content: 'Now playing next song...', flags: 64 });
+		}
+
+		// Start playing the next song
+		await playSongHandler(interaction);
+	}
+	else {
+		console.log('Queue is empty');
+		if (!interaction.replied) {
+			await interaction.reply({ content: 'The queue is empty. No more songs to play.', flags: 64 });
+		}
+		else {
+			await interaction.followUp({ content: 'The queue is empty. No more songs to play.', flags: 64 });
+		}
 	}
 }
 
-// Here we export our playSongHandler and queueSongSearch functions so that `play` and `queue`
 module.exports = {
 	playSongHandler,
 };

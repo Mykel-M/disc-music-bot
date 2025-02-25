@@ -1,7 +1,7 @@
 // interactionCreate.js
 // Discord.js guide code
 
-// HIn this module, we handle interaction events when needed
+// In this module, we handle interaction events when needed
 
 // chores
 const { Events, MessageFlags } = require('discord.js');

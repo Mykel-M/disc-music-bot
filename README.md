@@ -1,6 +1,6 @@
 # WORK-IN-PROGRESS
 
-# klooger-bot-1.0.0-pre-alpha_dev
+# klooger-bot-1.0.0-pre-alpha_dev (LINUX LOCAL REPO)
 
 license: [MIT](https://github.com/Mykel-M/disc-music-bot/blob/klooger-bot/LICENSE)
 
@@ -74,6 +74,9 @@ Please follow the linter rules so formatting is consistent.
 ## Events
 - `interactionCreate.js` : Handles interactions for slash commands
 - `ready.js` : Handles the ready state of the bot after index.js is executed
+
+## Work-In-Progress
+Favorites
 
 ## Contribution
 Please feel free contribute however and whatever you like.
