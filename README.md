@@ -1,6 +1,6 @@
 # WORK-IN-PROGRESS
 
-# klooger-bot-1.0.0-pre-alpha_dev (LINUX LOCAL REPO)
+# klooger-bot-1.0.0-pre-alpha_dev
 
 license: [MIT](https://github.com/Mykel-M/disc-music-bot/blob/klooger-bot/LICENSE)
 
