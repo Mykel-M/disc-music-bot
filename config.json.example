@@ -1,5 +1,4 @@
 {
-	"prefix": "!",
 	"token": "bot-token",
 	"clientId": "client-id",
 	"guildId": "guild-id"
